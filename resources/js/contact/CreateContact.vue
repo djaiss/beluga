@@ -48,22 +48,22 @@ export default {
       },
       loadingState: '',
       errorTemplate: Error,
-    }
+    };
   },
 
   methods: {
     submit() {
-      this.loadingState = 'loading'
+      this.loadingState = 'loading';
 
       axios.post('/contacts', this.form)
         .then(response => {
-          Turbolinks.visit('/' + response.data.company_id + '/dashboard/me')
+          Turbolinks.visit('/home');
         })
         .catch(error => {
-          this.loadingState = null
-          this.form.errors = _.flatten(_.toArray(error.response.data))
-        })
+          this.loadingState = null;
+          this.form.errors = _.flatten(_.toArray(error.response.data));
+        });
     },
   }
-}
+};
 </script>

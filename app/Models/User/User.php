@@ -6,7 +6,7 @@ use App\Models\Account\Account;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Activitylog\Traits\LogsActivity;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -55,7 +55,7 @@ class User extends Authenticatable
     /**
      * Get the account record associated with the user.
      *
-     * @return hasMany
+     * @return belongsTo
      */
     public function account()
     {
@@ -63,21 +63,11 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the notification record associated with the user.
-     *
-     * @return hasMany
-     */
-    public function notifications()
-    {
-        return $this->hasMany(Notification::class)->orderBy('created_at', 'desc');
-    }
-
-    /**
      * Get the fully qualified path to registration.
      *
      * @return string
      */
-    public function getPathConfirmationLink(): string
+    public function getPathConfirmationLink() : string
     {
         return secure_url('register/confirm/'.$this->verification_link);
     }

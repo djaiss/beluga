@@ -46,7 +46,6 @@
             "App\\": "app/"
         },
         "files": [
-            "app/Helpers/AccountHelper.php"
         ],
         "classmap": [
             "database/seeds",

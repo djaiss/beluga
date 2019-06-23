@@ -24,7 +24,7 @@ abstract class BaseService
      * @param array $data
      * @return bool
      */
-    public function validate(array $data): bool
+    public function validate(array $data) : bool
     {
         $validator = Validator::make($data, $this->rules())
             ->validate();
@@ -39,7 +39,7 @@ abstract class BaseService
      * @param int $accountId
      * @return User
      */
-    public function validatePermissions(int $userId, int $accountId): User
+    public function validatePermissions(int $userId, int $accountId) : User
     {
         return User::where('id', $userId)
             ->where('account_id', $accountId)

@@ -31,6 +31,12 @@
   justify-content: center;
   align-items: center;
 }
+
+.ball-pulse {
+  right: 8px;
+  top: 10px;
+  position: absolute;
+}
 </style>
 
 <template>
@@ -75,42 +81,29 @@
       </div>
 
       <!-- FIND BOX -->
-      <div v-show="modalFind" class="absolute z-max find-box">
+      <div v-show="modalFind" v-click-outside="hideFindModal" class="absolute z-max find-box">
         <div class="br2 bg-white tl pv3 ph3 bounceIn faster">
-          <form @submit.prevent="submit">
+          <form @submit.prevent="search">
             <div class="relative">
-              <input id="search" ref="search" v-model="form.searchTerm" type="text" name="search"
-                     :placeholder="$t('app.header_search_placeholder')" class="br2 f5 w-100 ba b--black-40 pa2 outline-0" required @keydown.esc="modalFind = false"
+              <input id="search" ref="search" v-model="form.terms" type="text" name="search"
+                     :placeholder="$t('app.header_search_placeholder')" class="br2 f5 w-100 ba b--black-40 pa2 outline-0" required
+                     @keydown.esc="modalFind = false"
+                     @keyup="search"
               />
-              <loading-button :classes="'btn add w-auto-ns w-100 mb2 pv2 ph3 absolute top-0 right-0'" :state="loadingState" :text="$t('app.search')" :cypress-selector="'header-find-submit'" />
+              <ball-pulse-loader v-if="processingSearch" color="#5c7575" size="7px" />
             </div>
           </form>
 
           <!-- Search results -->
           <ul v-show="dataReturnedFromSearch" class="pl0 list ma0 mt3" data-cy="results">
-            <!-- Employees -->
             <li class="b mb3">
-              <span class="f6 mb2 dib">{{ $t('app.header_search_employees') }}</span>
-              <ul v-if="employees.length > 0" class="list ma0 pl0">
-                <li v-for="employee in employees" :key="employee.id">
-                  <a :href="'/' + employee.company.id + '/employees/' + employee.id">{{ employee.name }}</a>
+              <ul v-if="contacts.length > 0" class="list ma0 pl0">
+                <li v-for="contact in contacts" :key="contact.id">
+                  <a href="/">{{ contact.enc_first_name }}</a>
                 </li>
               </ul>
               <div v-else class="silver">
-                {{ $t('app.header_search_no_employee_found') }}
-              </div>
-            </li>
-
-            <!-- Teams -->
-            <li class="fw5">
-              <span class="f6 mb2 dib">{{ $t('app.header_search_teams') }}</span>
-              <ul v-if="teams.length > 0" class="list ma0 pl0">
-                <li v-for="team in teams" :key="team.id">
-                  <a :href="'/' + team.company.id + '/teams/' + team.id">{{ team.name }}</a>
-                </li>
-              </ul>
-              <div v-else class="silver">
-                {{ $t('app.header_search_no_team_found') }}
+                No contacts found
               </div>
             </li>
           </ul>
@@ -118,13 +111,15 @@
       </div>
 
       <!-- NOTIFICATIONS BOX -->
-      <div v-if="showModalNotifications" class="absolute z-max notifications-box" v-click-outside="hideNotifications">
-        <div class="br2 bg-white tl pv3 ph3 bounceIn faster" >
+      <div v-if="showModalNotifications" v-click-outside="hideNotifications" class="absolute z-max notifications-box">
+        <div class="br2 bg-white tl pv3 ph3 bounceIn faster">
           <div v-show="notifications.length == 0">
             <img class="db center mb2" srcset="/img/header/notification_blank.png,
                                         /img/header/notitication_blank@2x.png 2x"
             />
-            <p class="tc">All is clear!</p>
+            <p class="tc">
+              All is clear!
+            </p>
           </div>
 
           <ul v-show="notifications.length > 0">
@@ -132,7 +127,6 @@
               {{ notification.action }}
             </li>
           </ul>
-
         </div>
       </div>
     </header>
@@ -196,7 +190,10 @@
 </template>
 
 <script>
-import ClickOutside from 'vue-click-outside'
+import ClickOutside from 'vue-click-outside';
+import 'vue-loaders/dist/vue-loaders.css';
+import * as VueLoaders from 'vue-loaders';
+Vue.use(VueLoaders);
 
 export default {
   directives: {
@@ -216,10 +213,6 @@ export default {
       type: Object,
       default: null,
     },
-    employee: {
-      type: Object,
-      default: null,
-    },
     notifications: {
       type: Array,
       default: null,
@@ -230,83 +223,87 @@ export default {
     return {
       loadingState: '',
       modalFind: false,
+      processingSearch: false,
       showModalNotifications: false,
       dataReturnedFromSearch: false,
       form: {
-        searchTerm: null,
+        terms: null,
         errors: [],
       },
-      employees: [],
-      teams: [],
-    }
+      contacts: [],
+    };
   },
 
   watch: {
     title(title) {
-      this.updatePageTitle(title)
+      this.updatePageTitle(title);
     }
   },
 
   mounted() {
-    this.updatePageTitle(this.title)
+    this.updatePageTitle(this.title);
 
     // prevent click outside event with popupItem.
-    this.popupItem = this.$el
+    this.popupItem = this.$el;
   },
 
 
   methods: {
     updatePageTitle(title) {
-      document.title = title ? `${title} | Example app` : 'Example app'
+      document.title = title ? `${title} | Example app` : 'Example app';
+    },
+
+    hideFindModal() {
+      this.dataReturnedFromSearch = false;
+      this.form.searchTerm = null;
+      this.contacts = [];
+      this.modalFind = false;
     },
 
     showFindModal() {
-      this.dataReturnedFromSearch = false
-      this.form.searchTerm = null
-      this.employees = []
-      this.teams = []
-      this.modalFind = !this.modalFind
+      this.dataReturnedFromSearch = false;
+      this.form.searchTerm = null;
+      this.contacts = [];
+      this.modalFind = !this.modalFind;
 
       this.$nextTick(() => {
-        this.$refs.search.focus()
-      })
+        this.$refs.search.focus();
+      });
     },
 
     showNotifications() {
-      this.showModalNotifications = !this.showModalNotifications
+      this.showModalNotifications = !this.showModalNotifications;
 
       axios.post('/notifications/read')
         .catch(error => {
-          this.loadingState = null
-          this.form.errors = _.flatten(_.toArray(error.response.data))
-        })
+          this.loadingState = null;
+          this.form.errors = _.flatten(_.toArray(error.response.data));
+        });
     },
 
     hideNotifications() {
-      this.showModalNotifications = false
+      this.showModalNotifications = false;
     },
 
-    submit() {
-      axios.post('/search/employees', this.form)
-        .then(response => {
-          this.dataReturnedFromSearch = true
-          this.employees = response.data.data
-        })
-        .catch(error => {
-          this.loadingState = null
-          this.form.errors = _.flatten(_.toArray(error.response.data))
-        })
+    search: _.debounce(
+      function() {
 
-      axios.post('/search/teams', this.form)
-        .then(response => {
-          this.dataReturnedFromSearch = true
-          this.teams = response.data.data
-        })
-        .catch(error => {
-          this.loadingState = null
-          this.form.errors = _.flatten(_.toArray(error.response.data))
-        })
-    }
+        if (this.form.searchTerm != '') {
+          this.processingSearch = true;
+
+          axios.post('/search/name', this.form)
+            .then(response => {
+              this.dataReturnedFromSearch = true;
+              this.contacts = response.data.data;
+              this.processingSearch = false;
+            })
+            .catch(error => {
+              this.loadingState = null;
+              this.form.errors = _.flatten(_.toArray(error.response.data));
+              this.processingSearch = false;
+            });
+        }
+      }, 500),
   },
-}
+};
 </script>

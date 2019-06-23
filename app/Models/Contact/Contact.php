@@ -2,7 +2,6 @@
 
 namespace App\Models\Contact;
 
-use App\Traits\Searchable;
 use App\Models\Account\Account;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -10,8 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Contact extends Model
 {
-    use LogsActivity,
-        Searchable;
+    use LogsActivity;
 
     protected $table = 'contacts';
 
@@ -26,22 +24,6 @@ class Contact extends Model
         'uuid',
         'avatar',
         'is_dummy',
-    ];
-
-    /**
-     * The attributes that are searchable with the trait.
-     *
-     * @var array
-     */
-    protected $searchableColumns = [
-    ];
-
-    /**
-     * The list of columns we want the Searchable trait to select.
-     *
-     * @var array
-     */
-    protected $returnFromSearch = [
     ];
 
     /**

@@ -5,6 +5,7 @@ parameters:
     ignoreErrors:
         - '#Method [a-zA-Z0-9\\_:]+\(\) should return Illuminate\\Http\\Response but returns [a-zA-Z0-9\\_]+\.#'
         - '#Method [a-zA-Z0-9\\_:]+\(\) should return Illuminate\\Http\\JsonResponse but returns [a-zA-Z0-9\\_]+\.#'
+        - '#Method [a-zA-Z0-9\\_:]+\(\) should return App\\Models\\User\\User but returns [a-zA-Z0-9\\_]+\.#'
         - '#Access to an undefined property Illuminate\\Contracts\\Auth\\MustVerifyEmail::\$email\.#'
         - '#Access to an undefined property Illuminate\\Support\\Fluent::\$[a-zA-Z0-9_]+\.#'
         - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany::active\(\)\.#'

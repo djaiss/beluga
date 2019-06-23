@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Models\Contact;
 
-use Tests\ApiTestCase;
+use Tests\TestCase;
 use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ContactTest extends ApiTestCase
+class ContactTest extends TestCase
 {
     use DatabaseTransactions;
 

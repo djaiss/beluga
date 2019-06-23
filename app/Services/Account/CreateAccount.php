@@ -26,12 +26,12 @@ class CreateAccount extends BaseService
     }
 
     /**
-     * Create a user and send a confirmation email.
+     * Create a user, the assocatied account and send a confirmation email.
      *
      * @param array $data
      * @return User
      */
-    public function execute(array $data): User
+    public function execute(array $data) : User
     {
         $this->validate($data);
 
@@ -59,7 +59,7 @@ class CreateAccount extends BaseService
      * @param array $data
      * @return User
      */
-    private function createUser(array $data): User
+    private function createUser(array $data) : User
     {
         $uuid = Str::uuid()->toString();
 
@@ -82,7 +82,7 @@ class CreateAccount extends BaseService
      * @param User $user
      * @return User
      */
-    private function generateConfirmationLink($user): User
+    private function generateConfirmationLink($user) : User
     {
         $user->verification_link = Str::uuid()->toString();
         $user->save();
@@ -108,7 +108,7 @@ class CreateAccount extends BaseService
      * @param User $user
      * @return Account
      */
-    private function createAccount(User $user): Account
+    private function createAccount(User $user) : Account
     {
         return Account::create([
         ]);

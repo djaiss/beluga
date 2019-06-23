@@ -2,14 +2,14 @@
 
 namespace Tests\Unit\Models\Account;
 
-use Tests\ApiTestCase;
+use Tests\TestCase;
 use App\Models\Company\Team;
 use App\Models\Account\AuditLog;
 use App\Models\Company\Position;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class AuditLogTest extends ApiTestCase
+class AuditLogTest extends TestCase
 {
     use DatabaseTransactions;
 
