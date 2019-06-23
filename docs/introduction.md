@@ -37,7 +37,8 @@ When users create an account, we give them their secret key and ask them to stor
 
 Performing the encryption process on the server is not great, as the secret key is actually transmitted in the HTTP query. Even though it’s served through HTTPS, it could still be captured. But even if this data is captured, it would only affect one user, and not the entire database. So we can say it’s reasonably secure. We don't want to make this huge effort of encrypting everything in the browser before sending the data.
 
-This kind of security is great for users, but it comes with limitations for developers:
-- it becomes really hard to perform a search,
-- it becomes almost impossible to notify users for instance, especially if we do encrypt their email addresses,
-- we can't sort data.
+This kind of security is great for users, but it comes with limitations:
+- it becomes way harder to make an efficient and complete search, and we have one, it will be considerably slower, as we need to decrypt on the fly all the data to find the one we need,
+- currently, search might not work at all on a large number of contacts (1000+),
+- it becomes almost impossible to make actions on behalf of the users if they are not logged in, as we don't have their secret key necessary to decrypt the data (like notifying users for instance, especially if we do encrypt their email addresses),
+- we can't sort data by name or content, only dates (if they are not encrypted).

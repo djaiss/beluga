@@ -20,6 +20,7 @@ class Account extends Model
      * @var array
      */
     protected $fillable = [
+        'secret_key_hash',
     ];
 
     /**

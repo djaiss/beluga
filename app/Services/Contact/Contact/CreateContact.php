@@ -33,7 +33,7 @@ class CreateContact extends BaseService
      * @param array $data
      * @return Contact
      */
-    public function execute(array $data): Contact
+    public function execute(array $data) : Contact
     {
         $this->validate($data);
 
@@ -60,7 +60,7 @@ class CreateContact extends BaseService
      * @param array $data
      * @return Contact
      */
-    private function add(array $data): Contact
+    private function add(array $data) : Contact
     {
         $uuid = Str::uuid()->toString();
 

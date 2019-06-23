@@ -17,7 +17,7 @@ class Contact extends JsonResource
         return [
             'id' => $this->id,
             'object' => 'contact',
-            'first_name' => $this->enc_first_name,
+            'enc_first_name' => $this->enc_first_name,
             'uuid' => $this->uuid,
             'avatar' => $this->avatar,
             'created_at' => $this->created_at,
