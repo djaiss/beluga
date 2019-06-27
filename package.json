@@ -44,6 +44,11 @@
         "linters": {
             "resources/**/*.{css, scss}": [
                 "prettier --write",
+                "yarn run prod",
+                "git add"
+            ],
+            "*.php": [
+                "php ./vendor/bin/php-cs-fixer fix --config .php_cs",
                 "git add"
             ]
         }
