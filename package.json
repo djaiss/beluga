@@ -20,6 +20,7 @@
         "laravel-mix": "^4.0.7",
         "lodash": "^4.17.5",
         "popper.js": "^1.12",
+        "prettier": "1.18.2",
         "resolve-url-loader": "^2.3.1",
         "sass": "^1.15.2",
         "sass-loader": "^7.1.0",
@@ -29,11 +30,26 @@
     },
     "dependencies": {
         "laravel-mix-purgecss": "^4.1.0",
+        "lint-staged": "^8.2.1",
+        "mrm": "^1.2.2",
         "turbolinks": "^5.2.0",
         "underscore": "^1.9.1",
         "vue-click-outside": "^1.0.7",
         "vue-i18n": "^8.8.2",
         "vue-loaders": "^2.0.0",
         "vue-snotify": "^3.2.1"
+    },
+    "lint-staged": {
+        "linters": {
+            "resources/**/*.{css, scss}": [
+                "prettier --write",
+                "git add"
+            ]
+        }
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
     }
 }
