@@ -19,7 +19,7 @@
         "eslint-plugin-vue": "^5.2.2",
         "husky": "^2.7.0",
         "laravel-mix": "^4.0.7",
-        "lodash": "^4.17.5",
+        "lodash": "^4.17.13",
         "popper.js": "^1.12",
         "prettier": "1.18.2",
         "resolve-url-loader": "^2.3.1",
